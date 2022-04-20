@@ -383,6 +383,25 @@ export const asyncRoutes = [
     ]
   },
 
+  {
+    path: '/user-manage',
+    component: Layout,
+    redirect: '/user-manage/account-manage',
+    name: 'excel',
+    meta: {
+      title: 'user-manage',
+      icon: 'peoples'
+    },
+    children: [
+      {
+        path: 'account-manage',
+        component: ()=>import('@/views/user-manage/account-manage'),
+        name: 'AccountManage',
+        meta: { title: 'account' }
+      }
+    ]
+  },
+
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
