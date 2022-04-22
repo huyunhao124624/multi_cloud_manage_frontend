@@ -387,7 +387,7 @@ export const asyncRoutes = [
     path: '/user-manage',
     component: Layout,
     redirect: '/user-manage/account-manage',
-    name: 'excel',
+    // name: 'excel',
     meta: {
       title: 'user-manage',
       icon: 'peoples'
@@ -402,8 +402,33 @@ export const asyncRoutes = [
     ]
   },
 
+  {
+    path: '/resource-pool',
+    component: Layout,
+    redirect: '/resource-pool/resource-pool-manage',
+    meta: {
+      title: 'resource-pool',
+      icon: 'component'
+    },
+    children: [
+      {
+        path: 'resource-pool-manage',
+        component: ()=>import('@/views/resource-pool/resource-pool-manage'),
+        name: 'resource-pool-manage',
+        meta: { title: 'manage' }
+      }
+    ]
+  },
+
+  // {
+  //   path: '/resource-pool',
+  //   component: Layout,
+  //   redirect '/resource-pool/manage',
+  //   name:
+  // },
+
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  { path: '*', redirect: '/404', hidden: true },
 ]
 
 const createRouter = () => new Router({

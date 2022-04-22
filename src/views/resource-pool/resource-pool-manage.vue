@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.title" placeholder="Title" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <!-- <el-input v-model="listQuery.title" placeholder="Title" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-select v-model="listQuery.importance" placeholder="Imp" clearable style="width: 90px" class="filter-item">
         <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
       </el-select>
@@ -13,16 +13,16 @@
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         Search
-      </el-button>
+      </el-button> -->
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        Add
+        新增用户
       </el-button>
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+      <!-- <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         Export
       </el-button>
       <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">
         reviewer
-      </el-checkbox>
+      </el-checkbox> -->
     </div>
 
     <el-table
@@ -35,9 +35,9 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="用户ID" prop="id" sortable="custom" align="center" width="150" :class-name="getSortClass('id')">
+      <el-table-column label="资源池ID" prop="id" sortable="custom" align="center" width="300" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
-          <span>{{ row.id }}</span>
+          <span>{{ row.resourcePoolId }}</span>
         </template>
       </el-table-column>
       <!-- <el-table-column label="Date" width="150px" align="center">
@@ -51,47 +51,83 @@
           <el-tag>{{ row.type | typeFilter }}</el-tag>
         </template>
       </el-table-column> -->
-      <el-table-column label="用户名" width="200px" align="center">
+      <el-table-column label="所属部门" width="150x" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.author }}</span>
+          <span>{{ row.departmentName }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="资源池类型" width="150x" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.resourcePoolTypeName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="cpu限制" width="150x" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.cpuLimit }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="cpu使用" width="150px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.cpuUsed }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="内存限制" width="150px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.cpuLimit }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="内存使用" width="150px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.memoryUsed }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="磁盘限制" width="150px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.diskLimit }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="磁盘使用" width="150px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.diskUsed }}</span>
+        </template>
+      </el-table-column>
+      
       <!-- <el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">
         <template slot-scope="{row}">
           <span style="color:red;">{{ row.reviewer }}</span>
         </template>
       </el-table-column> -->
-      <el-table-column label="姓名" width="200px" align="center">
+      <!-- <el-table-column label="姓名" width="200px" align="center">
         <template slot-scope="{row}">
           <svg-icon v-for="n in + row.importance" :key="n" icon-class="star" class="meta-item__icon" />
         </template>
-      </el-table-column>
-      <el-table-column label="Readings" align="center" width="95">
+      </el-table-column> -->
+      <!-- <el-table-column label="Readings" align="center" width="95">
         <template slot-scope="{row}">
           <span v-if="row.pageviews" class="link-type" @click="handleFetchPv(row.pageviews)">{{ row.pageviews }}</span>
           <span v-else>0</span>
         </template>
-      </el-table-column>
-      <el-table-column label="Status" class-name="status-col" width="100">
+      </el-table-column> -->
+      <!-- <el-table-column label="Status" class-name="status-col" width="100">
         <template slot-scope="{row}">
           <el-tag :type="row.status | statusFilter">
             {{ row.status }}
           </el-tag>
         </template>
-      </el-table-column>
-      <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+      </el-table-column> -->
+      <el-table-column label="操作" align="center" width="460" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            Edit
+            编辑
           </el-button>
-          <el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
+          <!-- <el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
             Publish
-          </el-button>
-          <el-button v-if="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">
+          </el-button> -->
+          <!-- <el-button v-if="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">
             Draft
-          </el-button>
+          </el-button> -->
           <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
-            Delete
+            删除
           </el-button>
         </template>
       </el-table-column>
@@ -101,27 +137,35 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="Type" prop="type">
+        <!-- <el-form-item label="Type" prop="type">
           <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
             <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
           </el-select>
-        </el-form-item>
-        <el-form-item label="Date" prop="timestamp">
+        </el-form-item> -->
+        <!-- <el-form-item label="Date" prop="timestamp">
           <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
+        </el-form-item> -->
+        <el-form-item label="名字">
+          <el-input v-model="temp.userName" />
         </el-form-item>
-        <el-form-item label="Title" prop="title">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <el-form-item label="Status">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
+        <el-form-item label="部门">
+          <el-select v-model="temp.departmentId" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in departmentOptions" :key="item.departmentId" :label="item.departmentName" :value="item.departmentId" />
           </el-select>
         </el-form-item>
-        <el-form-item label="Imp">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
+        <el-form-item label="角色">
+          <el-select v-model="temp.roleId" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in roleOptions" :key="item.roleId" :label="item.roleName" :value="item.roleId" />
+          </el-select>
         </el-form-item>
-        <el-form-item label="Remark">
-          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
+        <!-- <el-form-item label="Imp">
+          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
+        </el-form-item> -->
+        <el-form-item label="账号">
+          <el-input v-model="temp.account" :autosize="{ minRows: 1, maxRows: 1}" type="textarea" placeholder="Please input" />
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input v-model="temp.password" :autosize="{ minRows: 1, maxRows: 1}" type="textarea" placeholder="Please input" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -151,6 +195,8 @@ import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import {getAccountList,getAllRoleList,getDepartmentList,updateAccount,addAccount} from '@/api/account'
+import {getAllResourcePoolList} from '@/api/resource-pool'
 
 const calendarTypeOptions = [
   { key: 'CN', display_name: 'China' },
@@ -166,7 +212,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'DepartmentManage',
+  name: 'ResourcePoolManage',
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -190,58 +236,86 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        limit: 20,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
-        sort: '+id'
+        limit: 10,
+        // importance: undefined,
+        // title: undefined,
+        // type: undefined,
+        // sort: '+id'
       },
       importanceOptions: [1, 2, 3],
       calendarTypeOptions,
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       statusOptions: ['published', 'draft', 'deleted'],
+      departmentOptions: [],
+      roleOptions: [],
+      // roleOptions: ['管理员'],
+
       showReviewer: false,
       temp: {
-        id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        type: '',
-        status: 'published'
+        // userId: undefined,
+        // departmentId: '',
+        // roleId: '',
+        // userName: '',
+        // account: '',
+        resourcePoolId: '',
+        cpuLimit: 0,
+        cpuUsed: 0 ,
+        memoryLimit: 0 ,
+        memoryUsed: 0,
+        diskLimit:0,
+        diskUsed:0,
+        departmentId: '',
+        departmentName: '',
+        // id: undefined,
+        // importance: 1,
+        // remark: '',
+        // timestamp: new Date(),
+        // title: '',
+        // type: '',
+        // status: 'published'
       },
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        update: 'Edit',
-        create: 'Create'
+        update: '编辑',
+        create: '新增'
       },
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        title: [{ required: true, message: 'title is required', trigger: 'blur' }]
+        // type: [{ required: true, message: 'type is required', trigger: 'change' }],
+        // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
+        // title: [{ required: true, message: 'title is required', trigger: 'blur' }]
       },
       downloadLoading: false
     }
   },
   created() {
+      console.log('sucks')
     this.getList()
   },
   methods: {
     getList() {
-        this.listLoading=false
-    //   this.listLoading = true
-    //   fetchList(this.listQuery).then(response => {
-    //     this.list = response.data.items
-    //     this.total = response.data.total
+      this.listLoading = true
+      getAllResourcePoolList(this.listQuery).then(response=>{
+        console.log(response.data)
+        this.list = response.data.list
+        this.total = response.data.size
+        setTimeout(
+          this.listLoading = false
+        , 1.5*1000)
+      })
+     
+    
+      // fetchList(this.listQuery).then(response => {
+      //   this.list = response.data.items
+      //   this.total = response.data.total
 
-    //     // Just to simulate the time of the request
-    //     setTimeout(() => {
-    //       this.listLoading = false
-    //     }, 1.5 * 1000)
-    //   })
+      //   // Just to simulate the time of the request
+      //   setTimeout(() => 
+      //     this.listLoading = false
+      //   }, 1.5 * 1000)
+      // })
     },
     handleFilter() {
       this.listQuery.page = 1
@@ -270,13 +344,17 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        status: 'published',
-        type: ''
+        userId: undefined,
+        departmentId: '',
+        roleId: '',
+        userName: '',
+        account: '',
+        // importance: 1,
+        // remark: '',
+        // timestamp: new Date(),
+        // title: '',
+        // status: 'published',
+        // type: ''
       }
     },
     handleCreate() {
@@ -290,9 +368,9 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          this.temp.author = 'vue-element-admin'
-          createArticle(this.temp).then(() => {
+          // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
+          // this.temp.author = 'vue-element-admin'
+          addAccount(this.temp).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
@@ -307,7 +385,7 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
+      // this.temp.timestamp = new Date(this.temp.timestamp)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -318,9 +396,10 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
-          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateArticle(tempData).then(() => {
-            const index = this.list.findIndex(v => v.id === this.temp.id)
+          // tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          updateAccount(tempData).then(()=>{
+            console.log('this.temp.id')
+            const index = this.list.findIndex(v => v.userId === this.temp.userId)
             this.list.splice(index, 1, this.temp)
             this.dialogFormVisible = false
             this.$notify({
@@ -330,6 +409,17 @@ export default {
               duration: 2000
             })
           })
+          // updateArticle(tempData).then(() => {
+          //   const index = this.list.findIndex(v => v.id === this.temp.id)
+          //   this.list.splice(index, 1, this.temp)
+          //   this.dialogFormVisible = false
+          //   this.$notify({
+          //     title: 'Success',
+          //     message: 'Update Successfully',
+          //     type: 'success',
+          //     duration: 2000
+          //   })
+          // })
         }
       })
     },
