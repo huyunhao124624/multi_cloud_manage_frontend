@@ -15,7 +15,7 @@
         Search
       </el-button> -->
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        新增用户
+        新增资源池
       </el-button>
       <!-- <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         Export
@@ -145,28 +145,38 @@
         <!-- <el-form-item label="Date" prop="timestamp">
           <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
         </el-form-item> -->
-        <el-form-item label="名字">
+        <!-- <el-form-item label="名字">
           <el-input v-model="temp.userName" />
-        </el-form-item>
-        <el-form-item label="部门">
+        </el-form-item> -->
+        <el-form-item label="所属部门" v-if="this.dialogStatus !== 'update'">
           <el-select v-model="temp.departmentId" class="filter-item" placeholder="Please select">
             <el-option v-for="item in departmentOptions" :key="item.departmentId" :label="item.departmentName" :value="item.departmentId" />
           </el-select>
         </el-form-item>
-        <el-form-item label="角色">
+        <el-form-item label="资源池类型" v-if="this.dialogStatus !== 'update'" >
+          <el-select v-model="temp.resourcePoolTypeCode" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in resourcePoolTypeOptions" :key="item.resourcePoolTypeCode" :label="item.resourcePoolTypeName" :value="item.resourcePoolTypeCode" />
+          </el-select>
+        </el-form-item>
+        <!-- <el-form-item label="角色">
           <el-select v-model="temp.roleId" class="filter-item" placeholder="Please select">
             <el-option v-for="item in roleOptions" :key="item.roleId" :label="item.roleName" :value="item.roleId" />
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <!-- <el-form-item label="Imp">
           <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
         </el-form-item> -->
-        <el-form-item label="账号">
-          <el-input v-model="temp.account" :autosize="{ minRows: 1, maxRows: 1}" type="textarea" placeholder="Please input" />
+        <el-form-item label="cpu限制">
+          <el-input v-model="temp.cpuLimit" :autosize="{ minRows: 1, maxRows: 1}" type="textarea" placeholder="Please input" />
         </el-form-item>
-        <el-form-item label="密码">
-          <el-input v-model="temp.password" :autosize="{ minRows: 1, maxRows: 1}" type="textarea" placeholder="Please input" />
+        
+        <el-form-item label="内存限制">
+          <el-input v-model="temp.memoryLimit" :autosize="{ minRows: 1, maxRows: 1}" type="textarea" placeholder="Please input" />
         </el-form-item>
+        <el-form-item label="硬盘限制">
+          <el-input v-model="temp.diskLimit" :autosize="{ minRows: 1, maxRows: 1}" type="textarea" placeholder="Please input" />
+        </el-form-item>
+        
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
@@ -196,7 +206,7 @@ import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import {getAccountList,getAllRoleList,getDepartmentList,updateAccount,addAccount} from '@/api/account'
-import {getAllResourcePoolList} from '@/api/resource-pool'
+import {getAllResourcePoolList,getAllResourcePoolTypeList,addResourcePool,deleteResourcePoolById,updateResourcePool} from '@/api/resource-pool'
 
 const calendarTypeOptions = [
   { key: 'CN', display_name: 'China' },
@@ -247,7 +257,7 @@ export default {
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       statusOptions: ['published', 'draft', 'deleted'],
       departmentOptions: [],
-      roleOptions: [],
+      resourcePoolTypeOptions: [],
       // roleOptions: ['管理员'],
 
       showReviewer: false,
@@ -266,6 +276,8 @@ export default {
         diskUsed:0,
         departmentId: '',
         departmentName: '',
+        resourcePoolTypeCode: '',
+        resourcePoolTypeName:'',
         // id: undefined,
         // importance: 1,
         // remark: '',
@@ -291,7 +303,6 @@ export default {
     }
   },
   created() {
-      console.log('sucks')
     this.getList()
   },
   methods: {
@@ -304,6 +315,16 @@ export default {
         setTimeout(
           this.listLoading = false
         , 1.5*1000)
+      })
+
+      getAllResourcePoolTypeList().then(response=>{
+        this.resourcePoolTypeOptions = response.data
+        console.log('dik')
+        console.log(this.resourcePoolTypeOptions)
+      })
+
+      getDepartmentList().then(response=>{
+        this.departmentOptions = response.data
       })
      
     
@@ -344,11 +365,17 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        userId: undefined,
+        resourcePoolId: '',
+        cpuLimit: 0,
+        cpuUsed: 0 ,
+        memoryLimit: 0 ,
+        memoryUsed: 0,
+        diskLimit:0,
+        diskUsed:0,
         departmentId: '',
-        roleId: '',
-        userName: '',
-        account: '',
+        departmentName: '',
+        resourceTypeCode: '',
+        resourceTypeName:'',
         // importance: 1,
         // remark: '',
         // timestamp: new Date(),
@@ -370,7 +397,7 @@ export default {
         if (valid) {
           // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
           // this.temp.author = 'vue-element-admin'
-          addAccount(this.temp).then(() => {
+          addResourcePool(this.temp).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
@@ -397,9 +424,9 @@ export default {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
           // tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateAccount(tempData).then(()=>{
+          updateResourcePool(tempData).then(()=>{
             console.log('this.temp.id')
-            const index = this.list.findIndex(v => v.userId === this.temp.userId)
+            const index = this.list.findIndex(v => v.resourcePoolId === this.temp.resourcePoolId)
             this.list.splice(index, 1, this.temp)
             this.dialogFormVisible = false
             this.$notify({
