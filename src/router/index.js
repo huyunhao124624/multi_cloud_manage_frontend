@@ -414,8 +414,27 @@ export const asyncRoutes = [
       {
         path: 'resource-pool-manage',
         component: ()=>import('@/views/resource-pool/resource-pool-manage'),
-        name: 'resource-pool-manage',
+        name: 'resourcePoolManage',
         meta: { title: 'manage' }
+      }
+    ]
+  },
+  {
+    path: '/resource',
+    component: Layout,
+    redirect: '/resource/apply-resource',
+    meta: {
+      title: '云资源',
+      icon: 'component'
+    },
+    children:[
+      {
+        path: 'resource',
+        component: ()=>import('@/views/resource/apply-resource'),
+        name: 'applyResource',
+        meta: {
+          title: '申请资源'
+        }
       }
     ]
   },

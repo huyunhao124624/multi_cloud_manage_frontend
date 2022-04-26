@@ -35,7 +35,7 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="用户ID" prop="id" sortable="custom" align="center" width="300" :class-name="getSortClass('id')">
+      <el-table-column label="用户ID" prop="id" sortable="custom" align="center" width="150" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
           <span>{{ row.userId }}</span>
         </template>
@@ -51,6 +51,16 @@
           <el-tag>{{ row.type | typeFilter }}</el-tag>
         </template>
       </el-table-column> -->
+      <el-table-column label="部门" width="200px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.departmentName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="角色" width="200px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.roleName }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="用户名" width="400px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.account }}</span>
@@ -312,6 +322,8 @@ export default {
         roleId: '',
         userName: '',
         account: '',
+        departmentName:'',
+        roleName:''
         // importance: 1,
         // remark: '',
         // timestamp: new Date(),
