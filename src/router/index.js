@@ -11,6 +11,8 @@ import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
 import nestedRouter from './modules/nested'
+import resourceRouter from './modules/resource'
+import feeAnalyseRouter from './modules/fee-analyse'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -408,36 +410,39 @@ export const asyncRoutes = [
     redirect: '/resource-pool/resource-pool-manage',
     meta: {
       title: 'resource-pool',
-      icon: 'component'
+      icon: 'el-icon-box'
     },
     children: [
       {
         path: 'resource-pool-manage',
         component: ()=>import('@/views/resource-pool/resource-pool-manage'),
         name: 'resourcePoolManage',
-        meta: { title: 'manage' }
+        meta: { title: '资源池管理' }
       }
     ]
   },
-  {
-    path: '/resource',
-    component: Layout,
-    redirect: '/resource/apply-resource',
-    meta: {
-      title: '云资源',
-      icon: 'component'
-    },
-    children:[
-      {
-        path: 'resource',
-        component: ()=>import('@/views/resource/apply-resource'),
-        name: 'applyResource',
-        meta: {
-          title: '申请资源'
-        }
-      }
-    ]
-  },
+  resourceRouter,
+  feeAnalyseRouter,
+
+  // {
+  //   path: '/resource',
+  //   component: Layout,
+  //   redirect: '/resource/apply-resource',
+  //   meta: {
+  //     title: '云资源',
+  //     icon: 'component'
+  //   },
+  //   children:[
+  //     {
+  //       path: 'resource',
+  //       component: ()=>import('@/views/resource/apply-resource'),
+  //       name: 'applyResource',
+  //       meta: {
+  //         title: '申请资源'
+  //       }
+  //     }
+  //   ]
+  // },
 
   // {
   //   path: '/resource-pool',

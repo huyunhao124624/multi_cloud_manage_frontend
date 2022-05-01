@@ -6,3 +6,11 @@ export function getInitApplyResourcePageObject(){
         method: 'post',
     })
 }
+
+export function getResourceList(data){
+    return request({
+        url: '/resource/getResourceList',
+        method: 'post',
+        data
+    })
+}

@@ -46,9 +46,17 @@ export default {
       this.chart = echarts.init(document.getElementById(this.id))
       const xData = (function() {
         const data = []
-        for (let i = 1; i < 13; i++) {
-          data.push(i + 'month')
-        }
+        // for (let i = 1; i < 13; i++) {
+        //   data.push(i + 'month')
+        // }
+        data.push('<1天')
+        data.push('1~1周')
+        data.push('1周~15天')
+        data.push('15天~1个月')
+        data.push('1个月~2个月')
+        data.push('2个月~3个月')
+        data.push('3个月~6个月')
+        data.push('6个月~1年')
         return data
       }())
       this.chart.setOption({
@@ -183,86 +191,87 @@ export default {
             }
           },
           data: [
-            709,
-            1917,
-            2455,
-            2610,
-            1719,
-            1433,
-            1544,
-            3285,
-            5208,
-            3372,
-            2484,
-            4078
+            1,
+            10,
+            10,
+            10,
+            17,
+            14,
+            15,
+            10,
+            // 5208,
+            // 3372,
+            // 2484,
+            // 4078
           ]
         },
 
-        {
-          name: 'male',
-          type: 'bar',
-          stack: 'total',
-          itemStyle: {
-            normal: {
-              color: 'rgba(0,191,183,1)',
-              barBorderRadius: 0,
-              label: {
-                show: true,
-                position: 'top',
-                formatter(p) {
-                  return p.value > 0 ? p.value : ''
-                }
-              }
-            }
-          },
-          data: [
-            327,
-            1776,
-            507,
-            1200,
-            800,
-            482,
-            204,
-            1390,
-            1001,
-            951,
-            381,
-            220
-          ]
-        }, {
-          name: 'average',
-          type: 'line',
-          stack: 'total',
-          symbolSize: 10,
-          symbol: 'circle',
-          itemStyle: {
-            normal: {
-              color: 'rgba(252,230,48,1)',
-              barBorderRadius: 0,
-              label: {
-                show: true,
-                position: 'top',
-                formatter(p) {
-                  return p.value > 0 ? p.value : ''
-                }
-              }
-            }
-          },
-          data: [
-            1036,
-            3693,
-            2962,
-            3810,
-            2519,
-            1915,
-            1748,
-            4675,
-            6209,
-            4323,
-            2865,
-            4298
-          ]
-        }
+        // {
+        //   name: 'male',
+        //   type: 'bar',
+        //   stack: 'total',
+        //   itemStyle: {
+        //     normal: {
+        //       color: 'rgba(0,191,183,1)',
+        //       barBorderRadius: 0,
+        //       label: {
+        //         show: true,
+        //         position: 'top',
+        //         formatter(p) {
+        //           return p.value > 0 ? p.value : ''
+        //         }
+        //       }
+        //     }
+        //   },
+        //   data: [
+        //     327,
+        //     1776,
+        //     507,
+        //     1200,
+        //     800,
+        //     482,
+        //     204,
+        //     1390,
+        //     1001,
+        //     951,
+        //     381,
+        //     220
+        //   ]
+        // }, 
+        // {
+        //   name: 'average',
+        //   type: 'line',
+        //   stack: 'total',
+        //   symbolSize: 10,
+        //   symbol: 'circle',
+        //   itemStyle: {
+        //     normal: {
+        //       color: 'rgba(252,230,48,1)',
+        //       barBorderRadius: 0,
+        //       label: {
+        //         show: true,
+        //         position: 'top',
+        //         formatter(p) {
+        //           return p.value > 0 ? p.value : ''
+        //         }
+        //       }
+        //     }
+        //   },
+        //   data: [
+        //     1036,
+        //     3693,
+        //     2962,
+        //     3810,
+        //     2519,
+        //     1915,
+        //     1748,
+        //     4675,
+        //     6209,
+        //     4323,
+        //     2865,
+        //     4298
+        //   ]
+        // }
         ]
       })
     }
