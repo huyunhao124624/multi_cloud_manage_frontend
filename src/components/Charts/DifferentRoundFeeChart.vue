@@ -5,7 +5,7 @@
 <script>
 import echarts from "echarts";
 import resize from "./mixins/resize";
-import { getDepartmentDifferentRoundFee, getDepartmentDifferentRoundUsage } from "@/api/fee";
+import { getDepartmentDifferentRoundFee } from "@/api/fee";
 
 export default {
   mixins: [resize],
@@ -53,14 +53,14 @@ export default {
         // for (let i = 1; i < 13; i++) {
         //   data.push(i + 'month')
         // }
-        data.push("<1天");
-        data.push("1天~1周");
-        data.push("1周~15天");
-        data.push("15天~1个月");
-        data.push("1个月~2个月");
-        data.push("2个月~3个月");
-        data.push("3个月~6个月");
-        data.push("6个月~1年");
+        data.push("按需收费");
+        data.push("1周");
+        data.push("15天");
+        data.push("1个月");
+        data.push("2个月");
+        data.push("3个月");
+        data.push("半年");
+        data.push("1年");
         return data;
       })();
 
@@ -68,7 +68,7 @@ export default {
 
       
 
-      getDepartmentDifferentRoundUsage({
+      getDepartmentDifferentRoundFee({
         departmentId: this.departmentId
       }).then((response) => {
         this.chart.setOption({
@@ -110,7 +110,7 @@ export default {
             textStyle: {
               color: "#90979c",
             },
-            data: ["数量"],
+            data: ["费用"],
           },
           calculable: true,
           xAxis: [
@@ -187,7 +187,7 @@ export default {
           ],
           series: [
             {
-              name: "数量",
+              name: "费用",
               type: "bar",
               stack: "total",
               barMaxWidth: 35,

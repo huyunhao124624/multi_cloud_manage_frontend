@@ -1,48 +1,47 @@
-  <template>
-    <el-table
-      :data="tableData"
-       border fit highlight-current-row 
-      style="width: 100%">
-      <el-table-column
-        prop="date"
-        label="时间周期"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="使用费用"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="address"
-        label="地址">
-      </el-table-column>
-    </el-table>
-  </template>
+<template>
+  
+  <div class="chart-container">
+    <el-select v-model="departmentId" placeholder="请选择">
+        <el-option
+        v-for="item in departmentList"
+        :key="item.departmentId"
+        :label="item.departmentName"
+        :value="item.departmentId"
+        
+        >
+        </el-option>
+    </el-select>
+    <chart height="100%" width="100%" :departmentId="departmentId" :key="departmentId"/>
+  </div>
+</template>
 
-  <script>
-    export default {
-      name: 'fee-calculate',
-      data() {
-        return {
-          tableData: [{
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄'
-          }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄'
-          }, {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          }]
-        }
+<script>
+import Chart from '@/components/Charts/DifferentRoundFeeChart'
+import {getFeeAnalyseDepartmentList} from '@/api/fee'
+
+export default {
+  name: 'FeeCalculate',
+  components: { Chart },
+  created(){
+      getFeeAnalyseDepartmentList().then(response=>{
+          this.departmentList = response.data
+      })
+  },
+  data() {
+      return {
+        departmentList: [],
+        value: '',
+        departmentId: undefined,
       }
-    }
-  </script>
+  }
+}
+</script>
+
+<style scoped>
+.chart-container{
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 84px);
+}
+</style>
+

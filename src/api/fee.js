@@ -8,6 +8,14 @@ export function getFeeAnalyseDepartmentList(){
     })
 }
 
+export function getDepartmentDifferentRoundUsage(data){
+    return request({
+        url: '/fee/getDepartmentDifferentRoundUsage',
+        method: 'post',
+        data,
+    })
+}
+
 export function getDepartmentDifferentRoundFee(data){
     return request({
         url: '/fee/getDepartmentDifferentRoundFee',
