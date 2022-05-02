@@ -45,14 +45,14 @@
     </el-row>
     
     <div class="static-content-item">
-      <el-button>申请资源</el-button>
+      <el-button @click="clickApplyResource">申请资源</el-button>
     </div>
   </el-form>
   
 </template>
 
 <script>
-import {getInitApplyResourcePageObject} from '@/api/resource'
+import {getInitApplyResourcePageObject,applyResource} from '@/api/resource'
   export default {
     name: 'ApplyResource',
     components: {},
@@ -61,7 +61,7 @@ import {getInitApplyResourcePageObject} from '@/api/resource'
       return {
         cloudProviderName:'亚马逊云',
         formData: {
-          cloudProviderCode:'aws',
+          cloudProviderCode:'',
           
           resourceTypeCode: '',
           resourceTypeName:'',
@@ -86,6 +86,7 @@ import {getInitApplyResourcePageObject} from '@/api/resource'
             this.resourceSpecsOptions = response.data.resourceSpecsList
             this.amiOutIdOptions = response.data.imageList
             this.cloudProviderName = response.data.cloudProviderName
+            this.formData.cloudProviderCode = response.data.cloudProviderCode
         })
     },
     mounted() {},
@@ -98,6 +99,10 @@ import {getInitApplyResourcePageObject} from '@/api/resource'
       },
       resetForm() {
         this.$refs['vForm'].resetFields()
+      },clickApplyResource(){
+        applyResource(this.formData).then(response=>{
+          this.$router.push('/resource/get-resources')
+        })
       }
     }
   }

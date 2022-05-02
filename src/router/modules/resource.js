@@ -20,7 +20,7 @@ const resourceRouter = {
             }
         },
         {
-            path: 'resource-list',
+            path: 'get-resources',
             component:() => import("@/views/resource/get-resources"),
             meta: {
                 title: '资源列表'

@@ -121,7 +121,7 @@
             Draft
           </el-button> -->
           <el-button v-if="row.buttonList.indexOf('RELEASE_RESOURCE')!=-1" size="mini" type="danger" @click="handleDelete(row,$index) ">
-            删除
+            释放
           </el-button>
         </template>
       </el-table-column>
@@ -190,7 +190,7 @@ import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import {getAccountList,getAllRoleList,getDepartmentList,updateAccount,addAccount} from '@/api/account'
-import { getResourceList } from '@/api/resource'
+import { getResourceList,releaseResource } from '@/api/resource'
 
 const calendarTypeOptions = [
   { key: 'CN', display_name: 'China' },
@@ -206,7 +206,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'GetResources',
+  name: 'Resource',
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -358,12 +358,14 @@ export default {
       }
     },
     handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
+      
+      this.$router.push('/resource/apply-resource')
+      // this.resetTemp()
+      // this.dialogStatus = 'create'
+      // this.dialogFormVisible = true
+      // this.$nextTick(() => {
+      //   this.$refs['dataForm'].clearValidate()
+      // })
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {
@@ -424,13 +426,23 @@ export default {
       })
     },
     handleDelete(row, index) {
-      this.$notify({
-        title: 'Success',
-        message: 'Delete Successfully',
-        type: 'success',
-        duration: 2000
+      console.log('life sucks')
+      var tpData = Object.assign({}, row)
+      releaseResource({
+        resourceId: row.resourceId
+      }).then(response=>{
+        this.$notify({
+          title: 'Success',
+          message: 'Delete Successfully',
+          type: 'success',
+          duration: 2000
+        })
+        tpData.resourceStatusName = '已释放'
+        tpData.resourceStatusCode = 'RELEASED'
+        tpData.buttonList = []
+        this.list.splice(index, 1 ,tpData)
       })
-      this.list.splice(index, 1)
+      
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {
