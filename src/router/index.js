@@ -13,6 +13,8 @@ import tableRouter from './modules/table'
 import nestedRouter from './modules/nested'
 import resourceRouter from './modules/resource'
 import feeAnalyseRouter from './modules/fee-analyse'
+import resourcePoolRouter from './modules/resource-pool'
+import userManageRouter from './modules/user-manage'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -385,71 +387,12 @@ export const asyncRoutes = [
     ]
   },
 
-  {
-    path: '/user-manage',
-    component: Layout,
-    redirect: '/user-manage/account-manage',
-    // name: 'excel',
-    meta: {
-      title: 'user-manage',
-      icon: 'peoples'
-    },
-    children: [
-      {
-        path: 'account-manage',
-        component: ()=>import('@/views/user-manage/account-manage'),
-        name: 'AccountManage',
-        meta: { title: 'account' }
-      }
-    ]
-  },
+  
 
-  {
-    path: '/resource-pool',
-    component: Layout,
-    redirect: '/resource-pool/resource-pool-manage',
-    meta: {
-      title: 'resource-pool',
-      icon: 'el-icon-box'
-    },
-    children: [
-      {
-        path: 'resource-pool-manage',
-        component: ()=>import('@/views/resource-pool/resource-pool-manage'),
-        name: 'resourcePoolManage',
-        meta: { title: '资源池管理' }
-      }
-    ]
-  },
+  userManageRouter,
   resourceRouter,
   feeAnalyseRouter,
-
-  // {
-  //   path: '/resource',
-  //   component: Layout,
-  //   redirect: '/resource/apply-resource',
-  //   meta: {
-  //     title: '云资源',
-  //     icon: 'component'
-  //   },
-  //   children:[
-  //     {
-  //       path: 'resource',
-  //       component: ()=>import('@/views/resource/apply-resource'),
-  //       name: 'applyResource',
-  //       meta: {
-  //         title: '申请资源'
-  //       }
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: '/resource-pool',
-  //   component: Layout,
-  //   redirect '/resource-pool/manage',
-  //   name:
-  // },
+  resourcePoolRouter,
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true },
