@@ -5,15 +5,19 @@ const userManageRouter = {
     redirect: '/user-manage/account-manage',
     // name: 'excel',
     meta: {
-        title: 'user-manage',
-        icon: 'peoples'
+        title: '用户管理',
+        icon: 'peoples',
+        roles: ['3'],
     },
     children: [
         {
             path: 'account-manage',
             component: () => import('@/views/user-manage/account-manage'),
             name: 'AccountManage',
-            meta: { title: 'account' }
+            meta: {
+                title: '账户管理',
+                roles: ['3']
+            }
         }
     ]
 }

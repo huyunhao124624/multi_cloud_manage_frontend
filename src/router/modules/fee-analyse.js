@@ -8,7 +8,8 @@ const feeAnalyseRouter = {
     redirect: '/fee-analyse/fee-calculate',
     meta: {
         title: '费用分析',
-        icon: 'money'
+        icon: 'money',
+        roles: ['1','3','5']
     },
     children: [
         {
@@ -16,14 +17,16 @@ const feeAnalyseRouter = {
             component: () => import('@/views/fee-analyse/fee-calculate'),
             name: 'feeCalculate',
             meta: {
-                title: '费用计算'
+                title: '费用计算',
+                roles: ['1','3','5']
             }
         },{
             path: 'fee-usage',
             component: () => import('@/views/fee-analyse/fee-usage'),
             name: 'feeUsage',
             meta: {
-                title: '费用使用'
+                title: '费用使用',
+                roles: ['1','3','5']
             }
         }
 
