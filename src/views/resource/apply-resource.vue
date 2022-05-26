@@ -18,7 +18,7 @@
       <el-col :span="12" class="grid-cell">
         <el-form-item label="实例规格" class="label-right-align">
           <el-select v-model="formData.instanceType" class="full-width-input" clearable>
-            <el-option v-for="(item, index) in resourceSpecsOptions" :key="index" :label="item.instanceType+' '+item.cpuSize+'core '+item.memorySize+'g'"
+            <el-option v-for="(item, index) in resourceSpecsOptions" :key="index" :label="item.instanceType+' '+item.cpuNum+'core '+item.memorySize+'g'"
               :value="item.instanceType" :disabled="item.disabled"></el-option>
           </el-select>
         </el-form-item>

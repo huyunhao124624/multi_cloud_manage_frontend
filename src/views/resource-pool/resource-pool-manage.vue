@@ -451,12 +451,17 @@ export default {
       })
     },
     handleDelete(row, index) {
-      this.$notify({
-        title: 'Success',
-        message: 'Delete Successfully',
-        type: 'success',
-        duration: 2000
+      deleteResourcePoolById({
+        resourcePoolId: row.resourcePoolId
+      }).then(()=>{
+        this.$notify({
+          title: 'Success',
+          message: 'Delete Successfully',
+          type: 'success',
+          duration: 2000
+        })
       })
+      
       this.list.splice(index, 1)
     },
     handleFetchPv(pv) {

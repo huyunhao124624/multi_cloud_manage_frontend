@@ -76,6 +76,11 @@
           <span>{{ row.resourceStatusName }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="ip地址" width="200px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.publicIp }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="用户名" width="200px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.loginName }}</span>
