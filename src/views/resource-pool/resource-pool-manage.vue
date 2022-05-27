@@ -398,14 +398,22 @@ export default {
           // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
           // this.temp.author = 'vue-element-admin'
           addResourcePool(this.temp).then(() => {
-            this.list.unshift(this.temp)
-            this.dialogFormVisible = false
+            // this.list.unshift(this.temp)
+            // this.dialogFormVisible = false
             this.$notify({
               title: 'Success',
               message: 'Created Successfully',
               type: 'success',
               duration: 2000
             })
+            // getAllResourcePoolList(this.listQuery).then(()=>{
+            //   this.list = response.data.list
+            //   this.total = response.data.size
+              
+            // })
+            this.getList()
+            this.dialogFormVisible = false
+            
           })
         }
       })
