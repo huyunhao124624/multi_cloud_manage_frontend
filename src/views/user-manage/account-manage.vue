@@ -174,7 +174,7 @@ import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import {getAccountList,getAllRoleList,getDepartmentList,updateAccount,addAccount} from '@/api/account'
+import {getAccountList,getAllRoleList,getDepartmentList,updateAccount,addAccount,deleteAccountById} from '@/api/account'
 
 const calendarTypeOptions = [
   { key: 'CN', display_name: 'China' },
@@ -346,14 +346,16 @@ export default {
           // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
           // this.temp.author = 'vue-element-admin'
           addAccount(this.temp).then(() => {
-            this.list.unshift(this.temp)
-            this.dialogFormVisible = false
+            // this.list.unshift(this.temp)
+            
             this.$notify({
               title: 'Success',
               message: 'Created Successfully',
               type: 'success',
               duration: 2000
             })
+            this.getList()
+            this.dialogFormVisible = false
           })
         }
       })
@@ -399,13 +401,18 @@ export default {
       })
     },
     handleDelete(row, index) {
-      this.$notify({
-        title: 'Success',
-        message: 'Delete Successfully',
-        type: 'success',
-        duration: 2000
-      })
-      this.list.splice(index, 1)
+      deleteAccountById({userId: row.userId}).then(
+        ()=>{
+          this.$notify({
+          title: 'Success',
+          message: 'Delete Successfully',
+          type: 'success',
+          duration: 2000
+        })
+        this.list.splice(index, 1)
+        }
+      )
+      
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {

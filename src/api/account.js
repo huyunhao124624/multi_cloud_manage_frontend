@@ -41,3 +41,11 @@ export function addAccount(data){
         data
     })
 }
+
+export function deleteAccountById(data){
+    return request({
+        url: '/user/deleteAccountById',
+        method: 'post',
+        data
+    })
+}
